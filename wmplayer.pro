@@ -21,4 +21,5 @@ message("-> wmplayer.pro: CODECFORSRC = $${CODECFORSRC}")
 message("-> wmplayer.pro: Qt Version = $${QT_VERSION}")
 message("-> wmplayer.pro: VERSION = $${WMPLAYER_VERSION}")
 message("-> wmplayer.pro: OUT_PWD = $${OUT_PWD}")
+message("-> wmplayer.pro: PWD = $${PWD}")
 
