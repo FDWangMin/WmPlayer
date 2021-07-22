@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../resource/app/wmplayer1.png</file>
+        <file>../resource/app/loading.gif</file>
+        <file>../resource/app/wmplayer2.png</file>
+        <file>../resource/app/wmplayer3.png</file>
+        <file>../resource/app/wmplayer4.png</file>
+    </qresource>
+</RCC>

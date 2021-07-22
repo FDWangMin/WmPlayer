@@ -1,9 +1,15 @@
-﻿#include <QApplication>
+﻿
 #include <QSplashScreen>
-#include <QMainWindow>
 #include <QThread>
 #include <QLabel>
 #include <QMovie>
+#include <QDebug>
+#include <QPixmap>
+
+#include "Windows.h"
+
+#include "wmapplication.h"
+#include "wmmainwindow.h"
 
 const char ccAppName[] = "WmPlayer";
 
@@ -15,6 +21,7 @@ static void setHighDpiEnvironmentVariable()
             && !qEnvironmentVariableIsSet("QT_SCALE_FACTOR")
             && !qEnvironmentVariableIsSet("QT_SCREEN_SCALE_FACTORS"))
     {
+        qDebug() << "QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);";
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     }
 }
@@ -23,17 +30,11 @@ int main(int argc, char **argv)
 {
     setHighDpiEnvironmentVariable();
 
-    QApplication app(argc, argv);
+    WmApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    QSplashScreen splash(QPixmap(":/app/wmplayer1.png"));
-    splash.show();
-    app.processEvents();
-
-    QMainWindow mw;
+    WmMainWindow mw;
     mw.show();
-
-    splash.finish(&mw);
 
     return app.exec();
 }
