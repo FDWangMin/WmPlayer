@@ -1,17 +1,21 @@
 ################################
-#项目名称：播放器
+#项目名称：
 #项目构思：1.多功能 2.多内核 3.跨平台
-#        4.
 ################################
-
+QT += core
 #存放工程全局的一些预编译控制宏
 include(wmplayer.pri)
+include(wmheader.pri)
 
 TEMPLATE = subdirs
 
 SUBDIRS += \
     app \
-    resource
+    resource \
+    common\
+    commonapi \
+    uiplugins \
+    taskplugins
 
 CONFIG += ordered
 

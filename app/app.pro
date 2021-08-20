@@ -4,8 +4,6 @@ TEMPLATE = app
 TARGET = WmPlayer
 DESTDIR = ../bin
 
-#LIBS += -L../bin/ -lWmRes
-
 win32 {
 RC_ICONS = wmplayer.ico
 VERSION = $$WMPLAYER_VERSION
@@ -18,20 +16,34 @@ contains(DEFINES, CONSOLE) {
     CONFIG += console
 }
 
+#LIBS += -L../bin/ -lWmCommon
+INCLUDEPATH += ../wmheader/
+INCLUDEPATH += ../common/
+
+HEADERS += \
+#    ../wmheader/itaskpluginsmanager.h \
+#    ../wmheader/iuipluginsmanager.h \
+    wmapplication.h \
+    wmmainwindow.h \
+    wmlog.h \
+    wmpluginloader.h \
+    wmcore.h \
+    wmsignalengine.h
+
 SOURCES += \
     main.cpp \
     wmapplication.cpp \
-    wmmainwindow.cpp
-
-RESOURCES += \
-    appres.qrc
-
-HEADERS += \
-    wmapplication.h \
-    wmmainwindow.h
+    wmmainwindow.cpp \
+    wmlog.cpp \
+    wmpluginloader.cpp \
+    wmcore.cpp \
+    wmsignalengine.cpp
 
 FORMS += \
     wmmainwindow.ui
+
+RESOURCES += \
+    appres.qrc
 
 
 

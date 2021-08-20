@@ -3,8 +3,14 @@
 
 #include <QSplashScreen>
 #include <QDebug>
+#include <QDir>
+#include <QLabel>
+#include <QMenu>
 
 #include "Windows.h"
+#include "wmlog.h"
+#include "wmpluginloader.h"
+#include "iuipluginsmanager.h"
 
 WmMainWindow::WmMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,29 +18,60 @@ WmMainWindow::WmMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //???：无法加载资源文件内图片,暂且先加载exe同目录下文件
-    QPixmap pixmap("./resource/app/wmplayer1.png");
-//    QPixmap pixmap;
-//    bool isLoad = pixmap.load(":/../resource/app/wmplayer1.png"/*"D:/JYD/QtWmDemo/WmPlayer/resource/app/wmplayer1.png*/");
-    qDebug() << pixmap.size();
-    //加载图片
-    QSplashScreen splash(pixmap);
-    splash.show();
-    splash.showMessage("Loaded modules", Qt::AlignLeft|Qt::AlignBottom);
-    Sleep(100);
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            qDebug() << i << j;
-            splash.showMessage(QString("Established connections %1 %2").arg(i).arg(j), Qt::AlignLeft|Qt::AlignBottom);
-            Sleep(100);
-        }
-    }
-    splash.finish(this);
+    initMainWindow();
 }
 
 WmMainWindow::~WmMainWindow()
 {
     delete ui;
+    ui = NULL;
+}
+
+void WmMainWindow::initMainWindow()
+{
+    qDebug() << "WmMainWindow::initMainWindow:" << menuBar() << menuWidget();
+    m_uiMenu = ui->menuBar->addMenu("ui");
+    m_taskMenu = ui->menuBar->addMenu("task");
+
+    ui->statusbar->insertWidget(0, new QPushButton("o_O", ui->statusbar));
+    ui->statusbar->insertWidget(1, new QLabel("0_0", ui->statusbar));
+
+    //TestCode
+    connect(WmLog::instance(), &WmLog::sendLogMsg, this, &WmMainWindow::testSlot);
+    connect(ui->pushButton, &QPushButton::clicked, [this]()
+    {
+        qDebug() << QString::fromLocal8Bit("测试Test0123!@#$%^&*()");
+    });
+
+    //    QDir uiPluginPath(UIPLUGINS_PATH);
+    //    QStringList uiPluginDlls;
+    //    qDebug() << uiPluginPath.absolutePath();
+    //    if (uiPluginPath.exists())
+    //    {
+    //        uiPluginDlls = uiPluginPath.entryList(QStringList("*dll"), QDir::Files);
+    //        qDebug() << UIPLUGINS_PATH << uiPluginDlls;
+    //    }
+    //    foreach (auto strUiplugin, uiPluginDlls)
+    //    {
+    //        qDebug() << strUiplugin;
+    //        WmPluginLoader<IUiPluginsManager> pLoader;
+    //        if (!pLoader.loadPluginDll(QString(UIPLUGINS_PATH)+"/"+QString(strUiplugin)))
+    //            continue;
+    //        IUiPluginsManager *uiPluginManager = pLoader.pluginInstance();
+    //        if (uiPluginManager == NULL)
+    //            continue;
+    //        foreach (auto var, uiPluginManager->uiPluginsList())
+    //        {
+    //            qDebug() << var->id() << var->name();
+    //            var->getWidget(ui->dockWidget);
+    //        }
+    //    }
+}
+
+void WmMainWindow::testSlot(const QVariant &var)
+{
+    if (ui->textEdit->toPlainText().size() > 10000)
+        ui->textEdit->clear();
+    if (ui != NULL)
+        ui->textEdit->append(var.toString());
 }

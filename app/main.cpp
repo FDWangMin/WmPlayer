@@ -6,10 +6,11 @@
 #include <QDebug>
 #include <QPixmap>
 
-#include "Windows.h"
+//#include "Windows.h"
 
 #include "wmapplication.h"
 #include "wmmainwindow.h"
+#include "wmcore.h"
 
 const char ccAppName[] = "WmPlayer";
 
@@ -32,9 +33,11 @@ int main(int argc, char **argv)
 
     WmApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+    app.initialize();
 
-    WmMainWindow mw;
-    mw.show();
+    WmCore core;
+    core.initCore(&app);
+    core.getMainWindow()->show();
 
     return app.exec();
 }
