@@ -1,8 +1,10 @@
 ﻿#include "wwidget.h"
 #include "ui_wwidget.h"
 #include "itaskpluginsmanager.h"
+
 #include <QDebug>
 #include <QPainter>
+#include <QMetaMethod>
 
 WWidget::WWidget(QWidget *parent, ICore *core) :
     IWidget(parent),
@@ -24,14 +26,18 @@ void WWidget::initialize()
 
 bool WWidget::connectTPSigSlot(ITaskProcess *itp)
 {
-    qDebug() << "void WWidget::connectTPSigSlot";
-    return connect(this, &WWidget::toTPSignal, itp, &ITaskProcess::dispatchTaskSigSlot);
+    static const QMetaMethod mMethod = QMetaMethod::fromSignal(&WWidget::toTPSignal);
+    bool bConnected = isSignalConnected(mMethod);
+    qDebug() << "void WWidget::connectTPSigSlot" << bConnected;
+    return connect(this, &WWidget::toTPSignal, itp, &ITaskProcess::dispatchTaskSigSlot, Qt::ConnectionType(Qt::AutoConnection|Qt::UniqueConnection));
 }
 
 bool WWidget::connectUiSigSlot(IWidget *iwgt)
 {
-    qDebug() << "void WWidget::connectUiSigSlot";
-    return connect(this, &WWidget::toUiSignal, iwgt, &IWidget::dispatchUi2UiSigSlot);
+    static const QMetaMethod mMethod = QMetaMethod::fromSignal(&WWidget::toUiSignal);
+    bool bConnected = isSignalConnected(mMethod);
+    qDebug() << "void WWidget::connectUiSigSlot" << bConnected;
+    return connect(this, &WWidget::toUiSignal, iwgt, &IWidget::dispatchUi2UiSigSlot, Qt::ConnectionType(Qt::AutoConnection|Qt::UniqueConnection));
 }
 
 void WWidget::paintEvent(QPaintEvent *e)

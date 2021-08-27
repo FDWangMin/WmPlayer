@@ -3,6 +3,7 @@
 #include "wtaskprocess.h"
 #include <QMutex>
 #include <QThread>
+#include <QThreadPool>
 
 class LongRunningOperationsWork : public QObject
 {
@@ -47,6 +48,7 @@ public slots:
     void longRunningFinishedSlot(int i);
 
 private:
+    QThreadPool m_workerThreadPool;
     QThread m_workerThread;//最好用一个线程池
     LongRunningOperationsWork m_worker;
     QObject *m_curSender;

@@ -46,7 +46,7 @@ public:
     virtual QList<int> connectTaskPluginIds() const = 0;
     virtual QList<int> connectUiPluginIds() const = 0;
 
-    virtual IWidget* getWidget(QWidget *parent, CreateMode mode = GetCreated) = 0;
+    virtual IWidget* getIWidget(QWidget *parent, CreateMode mode = GetCreated) = 0;
 };
 #define IUiPlugin_iid "wm.IUiPlugin"
 Q_DECLARE_INTERFACE(IUiPlugin, IUiPlugin_iid)

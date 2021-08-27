@@ -18,9 +18,12 @@ INCLUDEPATH += ../wmheader/
 
 HEADERS += \
     ../wmheader/itaskpluginsmanager.h \
+    ../wmheader/icommonsignal.h \
     wtaskprocess.h \
-    wmstreamrwxml.h
+    wmstreamrwxml.h \
+    wcommonsignal.h
 
 SOURCES += \
     wtaskprocess.cpp \
-    wmstreamrwxml.cpp
+    wmstreamrwxml.cpp \
+    wcommonsignal.cpp

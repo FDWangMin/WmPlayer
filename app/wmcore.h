@@ -11,6 +11,7 @@ class WmApplication;
 class WmMainWindow;
 class WmLog;
 class QSplashScreen;
+class ICommonSignal;
 
 //ToDo:全局单例
 class WmCore : public QObject, public ICore
@@ -36,6 +37,8 @@ public:
 
     WmMainWindow* getMainWindow();
 
+    ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum);
+
     void dynamicConnectSigSlot();
 
 private:
@@ -46,10 +49,8 @@ private:
     QScopedPointer<QSplashScreen> m_splashScreen;
 
     QScopedPointer<ISignalEngine> m_sigEngine;
+//    ISignalEngine *m_sigEngine;
     QScopedPointer<IUiTaskSignalEngine> m_uiTaskSigEngine;
-
-    QMultiHash<int, IWidget*> m_multiHashIWidget;
-    QHash<int, ITaskProcess*> m_hashITaskProcess;
 
     QHash<int, IUiPlugin*> m_hashIUiPlugin;
     QHash<int, ITaskPlugin*> m_hashITaskPlugin;

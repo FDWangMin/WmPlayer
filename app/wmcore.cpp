@@ -38,7 +38,7 @@ void WmCore::initCore(WmApplication *app)
 
     loadPlugins();
 
-//    dynamicConnectSigSlot();
+    dynamicConnectSigSlot();
 }
 
 void WmCore::initSignalEngine()
@@ -102,26 +102,17 @@ void WmCore::loadUiPlugins(const QString &strPath)
             m_mainWindow->m_uiMenu->addAction(var->name(), [this, var]()
             {
                 QDockWidget *newDWgt = new QDockWidget(m_mainWindow.data());
-                IWidget *iWgt = var->getWidget(newDWgt, IUiPlugin::NewCreate);
+                IWidget *iWgt = var->getIWidget(newDWgt, IUiPlugin::NewCreate);
                 newDWgt->setWidget(iWgt);
                 newDWgt->setWindowTitle(var->name());
-                m_mainWindow->addDockWidget(Qt::LeftDockWidgetArea, newDWgt);
+                if (var->id()%2 == true)
+                    m_mainWindow->addDockWidget(Qt::LeftDockWidgetArea, newDWgt);
+                else
+                    m_mainWindow->addDockWidget(Qt::RightDockWidgetArea, newDWgt);
                 //放入对应哈希表中
-                m_multiHashIWidget.insert(var->id(), iWgt);
+                m_uiTaskSigEngine->insertMultiHashIWidget(var->id(), iWgt);
                 m_hashIUiPlugin.insert(var->id(), var);
-                foreach (auto id, var->connectTaskPluginIds())
-                {
-                    qDebug() << QString("connectUTSigSlot : %1 %2").arg(var->id()).arg(id);
-                    m_uiTaskSigEngine->connectUTSigSlot(iWgt, m_hashITaskProcess.value(id));
-                }
-                foreach (auto id, var->connectUiPluginIds())
-                {
-                    qDebug() << QString("connectUUSigSlot : %1 %2").arg(var->id()).arg(id);
-                    foreach (auto iwgt2Ptr, m_multiHashIWidget.values(id))
-                    {
-                        m_uiTaskSigEngine->connectUUSigSlot(iWgt, iwgt2Ptr);
-                    }
-                }
+                dynamicConnectSigSlot();
             });
         }
     }
@@ -152,9 +143,9 @@ void WmCore::loadTaskPlugins(const QString &strPath)
             qDebug() << var->id() << var->name();
             ITaskProcess *iTP = var->getTaskProcessing(this);
             //放入对应哈希表中
-            m_hashITaskProcess.insert(var->id(), iTP);
+            m_uiTaskSigEngine->insertHashITaskProcess(var->id(), iTP);
+            m_sigEngine->insertHashITaskProcess(var->id(), iTP);
             m_hashITaskPlugin.insert(var->id(), var);
-
             m_mainWindow->m_taskMenu->addAction(var->name(), [this, var]()
             {
                 qDebug() << var->id() << var->name() << var->group() << var->toolTip() << var->whatsThis();
@@ -173,29 +164,22 @@ WmMainWindow* WmCore::getMainWindow()
     return m_mainWindow.data();
 }
 
+ICommonSignal *WmCore::getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum)
+{
+    return m_sigEngine->getCommonSignal(strKey, piEnum);
+}
+
 void WmCore::dynamicConnectSigSlot()
 {
     foreach (auto var, m_hashIUiPlugin.values())
     {
         foreach (auto id, var->connectTaskPluginIds())
         {
-            qDebug() << QString("connectUTSigSlot : %1 %2").arg(var->id()).arg(id);
-            foreach (auto iwgtPtr, m_multiHashIWidget.values(var->id()))
-            {
-                m_uiTaskSigEngine->connectUTSigSlot(iwgtPtr, m_hashITaskProcess.value(id));
-            }
+            m_uiTaskSigEngine->connectUTByIdSigSlot(var->id(), id);
         }
-
         foreach (auto id, var->connectUiPluginIds())
         {
-            qDebug() << QString("connectUUSigSlot : %1 %2").arg(var->id()).arg(id);
-            foreach (auto iwgt1Ptr, m_multiHashIWidget.values(var->id()))
-            {
-                foreach (auto iwgt2Ptr, m_multiHashIWidget.values(id))
-                {
-                    m_uiTaskSigEngine->connectUUSigSlot(iwgt1Ptr, iwgt2Ptr);
-                }
-            }
+            m_uiTaskSigEngine->connectUUByIdSigSlot(var->id(), id);
         }
     }
 }

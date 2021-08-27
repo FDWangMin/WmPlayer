@@ -37,7 +37,7 @@ public:
         uiIds.append(UPIE_WmTestUiPluginTwoId);
         return uiIds;
     }
-    virtual IWidget *getWidget(QWidget *parent, CreateMode mode = GetCreated)
+    virtual IWidget *getIWidget(QWidget *parent, CreateMode mode = GetCreated)
     {
         if (mode == NewCreate)
         {
@@ -86,7 +86,7 @@ public:
         QList<int> uiIds;
         return uiIds;
     }
-    IWidget *getWidget(QWidget *parent, CreateMode mode = GetCreated)
+    IWidget *getIWidget(QWidget *parent, CreateMode mode = GetCreated)
     {
         if (mode == NewCreate)
         {

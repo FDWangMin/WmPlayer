@@ -1,6 +1,7 @@
 ﻿#include "testuipluginform.h"
 #include "ui_testuipluginform.h"
-
+#include "icommonsignal.h"
+#include "icore.h"
 #include <QDebug>
 
 TestUiPluginForm::TestUiPluginForm(QWidget *parent, ICore *core) :
@@ -21,6 +22,16 @@ void TestUiPluginForm::initialize()
     connect(ui->pushButton, &QPushButton::clicked, [this]()
     {
         emit toTPSignal(TST_TestTaskPgs2, QVariant(2222), true);
+    });
+    return;
+    connect(ui->pushButton_2, &QPushButton::clicked, [this]()
+    {
+        static ICommonSignal *iCom = m_mainCore->getCommonSignal("test1", TPIE_WmTestTaskPluginId);
+        qDebug() << "-------" << TST_TestTaskPgs1;
+        iCom->emitCommonSignal(TST_TestTaskPgs1, QVariant(6666), true);
+        TaskSigTypeEnum iEnum = TST_UnknowTaskSig;
+        int iRet = iCom->execWaitResult(5000, iEnum).toInt();
+        qDebug() << "=======" << iEnum << iRet;
     });
 }
 

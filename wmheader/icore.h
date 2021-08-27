@@ -19,6 +19,7 @@ class WmMainWindow;
 
 class IWidget;
 class ITaskProcess;
+class ICommonSignal;
 
 /**
 * @brief 程序调度引擎接口类
@@ -42,6 +43,8 @@ public:
 
     /*获取主窗体*/
     virtual WmMainWindow* getMainWindow() = 0;
+
+    virtual ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum) = 0;
 
 //    /*注册Ui类插件*/
 //    virtual bool regUiSigSlot(IWidget* wgt) = 0;

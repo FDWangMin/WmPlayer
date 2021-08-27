@@ -3,6 +3,8 @@
 #include "wmexport.h"
 #include "itaskpluginsmanager.h"
 
+class ICommonSignal;
+
 class WM_EXPORT_DLL WTaskProcess : public ITaskProcess
 {
     Q_OBJECT
@@ -22,6 +24,8 @@ signals:
 public:
     //不需要子类实现
     bool connectUiSigSlot(IWidget *iwgt);
+    //不需要子类实现
+    bool connectCommonSigSlot(ICommonSignal *iCom);
 };
 
 #endif // WTASKPROCESS_H

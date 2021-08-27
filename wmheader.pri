@@ -19,4 +19,5 @@ wmheader/icore.h \
 wmheader/iapplication.h \
 wmheader/itaskpluginsmanager.h \
 wmheader/wmexport.h \
-wmheader/isignalengine.h
+wmheader/isignalengine.h \
+wmheader/icommonsignal.h

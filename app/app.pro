@@ -16,9 +16,10 @@ contains(DEFINES, CONSOLE) {
     CONFIG += console
 }
 
-#LIBS += -L../bin/ -lWmCommon
+LIBS += -L../bin/ -lWmCommonApi
 INCLUDEPATH += ../wmheader/
 INCLUDEPATH += ../common/
+INCLUDEPATH += ../commonapi/
 
 HEADERS += \
 #    ../wmheader/itaskpluginsmanager.h \

@@ -8,7 +8,7 @@
 class QString;
 class QVariant;
 class IWidget;
-
+class ICommonSignal;
 class ICore;
 
 class ITaskProcess : public QObject
@@ -24,6 +24,7 @@ public slots:
 
 public:
     virtual bool connectUiSigSlot(IWidget *iwgt) = 0;
+    virtual bool connectCommonSigSlot(ICommonSignal *iCom) = 0;
 };
 
 class ITaskPlugin
