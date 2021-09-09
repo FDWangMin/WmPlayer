@@ -34,6 +34,7 @@ public:
     ~TestTaskProgress();
 
     void initialize();
+    virtual QList<TaskSigTypeEnum> getAvailableTaskIds() const;
 
     void taskProcessOne(const QVariant &var, bool bThread);
     void taskProcessTwo(const QVariant &var, bool bThread);
@@ -49,7 +50,7 @@ public slots:
 
 private:
     QThreadPool m_workerThreadPool;
-    QThread m_workerThread;//最好用一个线程池
+    QThread m_workerThread;//需要的话用一个线程池管理
     LongRunningOperationsWork m_worker;
     QObject *m_curSender;
     TaskSigTypeEnum m_curTaskId;

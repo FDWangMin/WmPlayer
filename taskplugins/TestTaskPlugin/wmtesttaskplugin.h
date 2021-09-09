@@ -22,6 +22,14 @@ public:
     QString group() const {return QString("TestTaskPlugin");}
     QString toolTip() const {return QString("TestTaskPlugin!");}
     QString whatsThis() const {return QString("1.测试；2.还是测试");}
+    QList<TaskSigTypeEnum> getAvailableTaskIds() const
+    {
+        QList<TaskSigTypeEnum> taskIdList;
+        if (m_curObj.isNull())
+            return taskIdList;
+        else
+            return m_curObj->getAvailableTaskIds();
+    }
     ITaskProcess* getTaskProcessing(QObject *parent)
     {
         if (m_curObj.isNull())
@@ -30,7 +38,6 @@ public:
         }
         return m_curObj.data();
     }
-
 
 private:
     ICore* m_mainCore;
@@ -51,6 +58,14 @@ public:
     QString group() const {return QString("TestTaskPlugin");}
     QString toolTip() const {return QString("WmTestTaskPluginTwo");}
     QString whatsThis() const {return QString("WmTestTaskPluginTwo");}
+    QList<TaskSigTypeEnum> getAvailableTaskIds() const
+    {
+        QList<TaskSigTypeEnum> taskIdList;
+        if (m_curObj.isNull())
+            return taskIdList;
+        else
+            return m_curObj->getAvailableTaskIds();
+    }
     ITaskProcess* getTaskProcessing(QObject *parent)
     {
         if (m_curObj.isNull())

@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QEventLoop>
 #include <QDebug>
+#include <QTimer>
 
 LongRunningOperationsWork::~LongRunningOperationsWork()
 {
@@ -33,7 +34,9 @@ void LongRunningOperationsWork::LongRunningFun2(const QVariant &var)
     emit LongRunningFinished(m_i);
 }
 
-TestTaskProgress::TestTaskProgress(QObject *parent) : WTaskProcess(parent)
+TestTaskProgress::TestTaskProgress(QObject *parent) :
+    WTaskProcess(parent),
+    m_curSender(NULL)
 {
     initialize();
 }
@@ -52,6 +55,25 @@ void TestTaskProgress::initialize()
     connect(&m_worker, &LongRunningOperationsWork::LongRunningFinished, this, &TestTaskProgress::longRunningFinishedSlot);
     connect(&m_workerThread, &QThread::finished, [this]()
     {qDebug() << "m_workerThread, &QThread::finished";});
+
+    QTimer *timer = new QTimer(this);
+    timer->start(5000);
+    connect(timer, &QTimer::timeout, [this]()
+    {
+        static int iTemp = 10000;
+        emit returnUiSignal((TaskSigTypeEnum)0, iTemp++, NULL);
+    });
+}
+
+QList<TaskSigTypeEnum> TestTaskProgress::getAvailableTaskIds() const
+{
+    static QList<TaskSigTypeEnum> tstEnumList;
+    if (tstEnumList.size() == 0)
+    {
+        tstEnumList.append(TST_TestTaskPgs1);
+        tstEnumList.append(TST_TestTaskPgs2);
+    }
+    return tstEnumList;
 }
 
 void TestTaskProgress::taskProcessOne(const QVariant &var, bool bThread)
@@ -108,7 +130,7 @@ void TestTaskProgress::dispatchTaskSigSlot(const TaskSigTypeEnum &tstEnum, const
 
     qDebug() << sender() << sender()->objectName();
 
-    if (tstEnum != TST_TestTaskPgs1 && tstEnum != TST_TestTaskPgs2)
+    if (!getAvailableTaskIds().contains(tstEnum))
     {
         m_curTaskId = TST_UnknowTaskSig;
         return;
@@ -136,7 +158,7 @@ void TestTaskProgress::longRunningFinishedSlot(int i)
     m_workerThread.quit();
     qDebug() << "void TestTaskProgress::longRunningFinishedSlot" << i << m_workerThread.wait(2000);
 
-    emit returnUiSignal(m_curSender, m_curTaskId, i);
+    emit returnUiSignal(m_curTaskId, i, m_curSender);
 }
 
 
