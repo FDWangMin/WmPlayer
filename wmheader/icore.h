@@ -44,7 +44,7 @@ public:
     /*获取主窗体*/
     virtual WmMainWindow* getMainWindow() = 0;
 
-    virtual ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum) = 0;
+    virtual ICommonSignal* getCommonSignal(const PluginIdEnum &piEnum) = 0;
 
 //    /*注册Ui类插件*/
 //    virtual bool regUiSigSlot(IWidget* wgt) = 0;

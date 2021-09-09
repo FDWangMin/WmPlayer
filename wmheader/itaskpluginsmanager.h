@@ -18,6 +18,7 @@ public:
     ITaskProcess(QObject *parent = 0) : QObject(parent){}
 
     virtual void initialize() = 0;
+    virtual QList<TaskSigTypeEnum> getAvailableTaskIds() const = 0;
 
 public slots:
     virtual void dispatchTaskSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, bool bThread = false) = 0;
@@ -39,6 +40,7 @@ public:
     virtual QString toolTip() const = 0;
     virtual QString whatsThis() const = 0;
 //    virtual QIcon icon() const = 0;
+    virtual QList<TaskSigTypeEnum> getAvailableTaskIds() const = 0;
 
     virtual ITaskProcess* getTaskProcessing(QObject *parent) = 0;
 };

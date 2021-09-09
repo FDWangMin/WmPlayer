@@ -20,11 +20,11 @@ enum PluginIdEnum;
 class ISignalEngine
 {
 public:
-    virtual ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum) = 0;
+    virtual ICommonSignal* getCommonSignal(const PluginIdEnum &piEnum) = 0;
 
-    virtual void sendSignal(const QString &key, const TaskSigTypeEnum &evt, const QVariant &v, bool bThread = false) = 0;
+    virtual void sendSignal(const PluginIdEnum &piEnum, const TaskSigTypeEnum &evt, const QVariant &v, bool bThread = false) = 0;
 
-    virtual const QVariant& execWaitResult(const QString &strKey, int iMs, TaskSigTypeEnum &tstEnum) = 0;
+    virtual const QVariant& execWaitResult(const PluginIdEnum &piEnum, TaskSigTypeEnum &tstEnum, int iMs = 2000) = 0;
 
     virtual void connectSignalSlot(ICommonSignal *iCom, ITaskProcess *itps) = 0;
 

@@ -18,13 +18,14 @@ public:
     virtual void emitCommonSignal(const TaskSigTypeEnum &iEnum, const QVariant &var, bool bThread = false) = 0;
 
     //第一个值是传入参数，第二个值是传出参数
-    virtual const QVariant& execWaitResult(int iMs, TaskSigTypeEnum &iEnum) = 0;
+    virtual const QVariant& execWaitResult(TaskSigTypeEnum &iEnum, int iMs = 2000) = 0;
 
 public slots:
-    virtual void dispatchReturnSigSlot(QObject *sender, int iEnum, const QVariant &var) = 0;
+    virtual void dispatchReturnSigSlot(int iEnum, const QVariant &var, QObject *sender) = 0;
 
 public:
     virtual bool connectTPSigSlot(ITaskProcess *itp) = 0;
+    virtual bool connectFromTaskSigSlot(const QObject *receiver, const char *method) = 0;
 };
 
 #endif  //ICOMMONSIGNAL_H

@@ -21,7 +21,7 @@ public:
     virtual void initialize() = 0;
 
 public slots:
-    virtual void dispatchTask2UiSigSlot(QObject *sender, const TaskSigTypeEnum &tstEnum, const QVariant &var) = 0;
+    virtual void dispatchTask2UiSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, QObject *sender) = 0;
     virtual void dispatchUi2UiSigSlot(const UiSigTypeEnum &ustEnum, const QVariant &var) = 0;
 
 public:
