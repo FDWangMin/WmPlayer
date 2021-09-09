@@ -33,9 +33,11 @@ void TestUiPluginWidget::initialize()
     });
 }
 
-void TestUiPluginWidget::dispatchTask2UiSigSlot(QObject *sender, const TaskSigTypeEnum &tstEnum, const QVariant &var)
+void TestUiPluginWidget::dispatchTask2UiSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, QObject *sender)
 {
-    if (this != sender)
+    //sender如果不是自己并且不为NULL直接返回
+    //为NULL值说明这个信号是业务层发送给所有链接过的界面层的
+    if (this != sender && sender != NULL)
         return;
 
     qDebug() << "this=" << this << "sender=" << sender << "void TestUiPluginWidget::dispatchTask2UiSigSlot" << tstEnum << var;

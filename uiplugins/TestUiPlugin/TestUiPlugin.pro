@@ -33,6 +33,7 @@ SOURCES += \
     testuipluginform.cpp
 
 HEADERS += \
+#    ../../wmheader/icommonsignal.h \
     testuipluginwidget.h \
     wmtestuiplugin.h \
     wmtestuipluginsmanager.h \

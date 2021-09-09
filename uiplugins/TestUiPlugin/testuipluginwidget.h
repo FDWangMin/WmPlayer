@@ -15,11 +15,11 @@ public:
     explicit TestUiPluginWidget(QWidget *parent, ICore *core = 0);
     ~TestUiPluginWidget();
 
-    void initialize();
+    void initialize() override;
 
 public slots:
-    void dispatchTask2UiSigSlot(QObject *sender, const TaskSigTypeEnum &tstEnum, const QVariant &var);
-    void dispatchUi2UiSigSlot(const UiSigTypeEnum &ustEnum, const QVariant &var);
+    void dispatchTask2UiSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, QObject *sender) override;
+    void dispatchUi2UiSigSlot(const UiSigTypeEnum &ustEnum, const QVariant &var) override;
 
 private:
     Ui::TestUiPluginWidget *ui;
