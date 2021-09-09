@@ -21,16 +21,19 @@ public:
 
     virtual void emitCommonSignal(const TaskSigTypeEnum &iEnum, const QVariant &var, bool bThread = false);
 
-    virtual const QVariant& execWaitResult(int iMs, TaskSigTypeEnum &iEnum);
+    virtual const QVariant& execWaitResult(TaskSigTypeEnum &iEnum, int iMs = 2000);
 
 signals:
     void toTPSignal(const TaskSigTypeEnum &iEnum, const QVariant& v, bool bThread = false);
 
+    void fromTaskSignal(const TaskSigTypeEnum &iEnum, const QVariant &var, QObject *sender);
+
 public slots:
-    virtual void dispatchReturnSigSlot(QObject *sender, int iEnum, const QVariant &var);
+    virtual void dispatchReturnSigSlot(int iEnum, const QVariant &var, QObject *sender);
 
 public:
-    virtual bool connectTPSigSlot(ITaskProcess *itp);
+    virtual bool connectTPSigSlot(ITaskProcess *itp) final;
+    virtual bool connectFromTaskSigSlot(const QObject *receiver, const char *method) final;
 
 private:
     QEventLoop m_eLoop;
