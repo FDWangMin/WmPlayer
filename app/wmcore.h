@@ -37,7 +37,7 @@ public:
 
     WmMainWindow* getMainWindow();
 
-    ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum);
+    ICommonSignal* getCommonSignal(const PluginIdEnum &piEnum);
 
     void dynamicConnectSigSlot();
 

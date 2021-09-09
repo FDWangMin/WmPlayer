@@ -29,8 +29,8 @@ void WmCore::initCore(WmApplication *app)
 {
     m_app = app;
 
-    WmLog::instance()->startLog();
-    m_log = WmLog::instance();
+//    WmLog::instance()->startLog();
+//    m_log = WmLog::instance();
 
     initSignalEngine();
     initSplashScreen();
@@ -164,9 +164,9 @@ WmMainWindow* WmCore::getMainWindow()
     return m_mainWindow.data();
 }
 
-ICommonSignal *WmCore::getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum)
+ICommonSignal *WmCore::getCommonSignal(const PluginIdEnum &piEnum)
 {
-    return m_sigEngine->getCommonSignal(strKey, piEnum);
+    return m_sigEngine->getCommonSignal(piEnum);
 }
 
 void WmCore::dynamicConnectSigSlot()

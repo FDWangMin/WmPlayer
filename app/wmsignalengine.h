@@ -12,22 +12,23 @@ class WmSignalEngine : public ISignalEngine
 public:
     ~WmSignalEngine();
 
-    ICommonSignal* getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum);
+    ICommonSignal* getCommonSignal(const PluginIdEnum &piEnum);
 
-    void sendSignal(const QString &key, const TaskSigTypeEnum &tstEnum, const QVariant &v, bool bThread = false);
+    void sendSignal(const PluginIdEnum &piEnum, const TaskSigTypeEnum &tstEnum, const QVariant &v, bool bThread = false);
 
-    const QVariant& execWaitResult(const QString &strKey, int iMs, TaskSigTypeEnum &tstEnum);
+    const QVariant& execWaitResult(const PluginIdEnum &piEnum, TaskSigTypeEnum &tstEnum, int iMs = 2000);
+
 
     void connectSignalSlot(ICommonSignal *iCom, ITaskProcess *itps);
-
-    QHash<QString, ICommonSignal *> getHashICommonSignal() const;
 
     void insertHashITaskProcess(int pluginId, ITaskProcess *iTp);
 
     QHash<int, ITaskProcess *> hashITaskProcess() const;
 
+    QHash<int, ICommonSignal *> getHashICommonSignal() const;
+
 private:
-    QHash<QString, ICommonSignal *> m_hashICommonSignal;
+    QHash<int, ICommonSignal *> m_hashICommonSignal;
     QHash<int, ITaskProcess *> m_hashITaskProcess;
 };
 

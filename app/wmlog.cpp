@@ -77,8 +77,8 @@ WmLog* WmLog::instance()
 }
 
 WmLog::WmLog(QObject *parent) : QObject(parent),
-    m_bToSigSLot(true),
-    m_bToFile(true),
+    m_bToSigSLot(false),
+    m_bToFile(false),
     m_bShowNewLine(false),
     m_bShowTime(true),
     m_bShowFileName(false),

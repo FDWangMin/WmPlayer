@@ -15,27 +15,27 @@ WmSignalEngine::~WmSignalEngine()
     };
 }
 
-ICommonSignal *WmSignalEngine::getCommonSignal(const QString &strKey, const PluginIdEnum &piEnum)
+ICommonSignal *WmSignalEngine::getCommonSignal(const PluginIdEnum &piEnum)
 {
-    if (m_hashICommonSignal.contains(strKey))
-        return m_hashICommonSignal.value(strKey);
+    if (m_hashICommonSignal.contains(piEnum))
+        return m_hashICommonSignal.value(piEnum);
     else
     {
         ICommonSignal *newComSig = new WCommonSignal;
-        m_hashICommonSignal.insert(strKey, newComSig);
+        m_hashICommonSignal.insert(piEnum, newComSig);
         connectSignalSlot(newComSig, m_hashITaskProcess.value(piEnum));
         return newComSig;
     }
 }
 
-void WmSignalEngine::sendSignal(const QString &strKey, const TaskSigTypeEnum &tstEnum, const QVariant &var, bool bThread)
+void WmSignalEngine::sendSignal(const PluginIdEnum &piEnum, const TaskSigTypeEnum &tstEnum, const QVariant &var, bool bThread)
 {
-    m_hashICommonSignal.value(strKey)->emitCommonSignal(tstEnum, var, bThread);
+    m_hashICommonSignal.value(piEnum)->emitCommonSignal(tstEnum, var, bThread);
 }
 
-const QVariant& WmSignalEngine::execWaitResult(const QString &strKey, int iMs, TaskSigTypeEnum &tstEnum)
+const QVariant& WmSignalEngine::execWaitResult(const PluginIdEnum &piEnum, TaskSigTypeEnum &tstEnum, int iMs)
 {
-    return m_hashICommonSignal.value(strKey)->execWaitResult(iMs, tstEnum);
+    return m_hashICommonSignal.value(piEnum)->execWaitResult(tstEnum, iMs);
 }
 
 void WmSignalEngine::connectSignalSlot(ICommonSignal *iCom, ITaskProcess *itps)
@@ -50,11 +50,6 @@ void WmSignalEngine::connectSignalSlot(ICommonSignal *iCom, ITaskProcess *itps)
     itps->connectCommonSigSlot(iCom);
 }
 
-QHash<QString, ICommonSignal *> WmSignalEngine::getHashICommonSignal() const
-{
-    return m_hashICommonSignal;
-}
-
 void WmSignalEngine::insertHashITaskProcess(int pluginId, ITaskProcess *iTp)
 {
     m_hashITaskProcess.insert(pluginId, iTp);
@@ -65,7 +60,13 @@ QHash<int, ITaskProcess *> WmSignalEngine::hashITaskProcess() const
     return m_hashITaskProcess;
 }
 
+QHash<int, ICommonSignal *> WmSignalEngine::getHashICommonSignal() const
+{
+    return m_hashICommonSignal;
+}
 
+
+/*WmUiTaskSignalEngine.cpp*/
 void WmUiTaskSignalEngine::connectUTSigSlot(IWidget *iwgt, ITaskProcess *itps)
 {
     if (iwgt == NULL || itps == NULL)
