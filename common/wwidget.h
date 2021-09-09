@@ -21,7 +21,7 @@ public:
     void initialize();
 public slots:
     //子类需要重写
-    void dispatchTask2UiSigSlot(QObject *sender, const TaskSigTypeEnum &tstEnum, const QVariant &var);
+    void dispatchTask2UiSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, QObject *sender);
     void dispatchUi2UiSigSlot(const UiSigTypeEnum &ustEnum, const QVariant &var);
 
 signals:
@@ -30,8 +30,8 @@ signals:
 
 public:
     //不需要子类实现
-    bool connectTPSigSlot(ITaskProcess *itp);
-    bool connectUiSigSlot(IWidget *iwgt);
+    bool connectTPSigSlot(ITaskProcess *itp) final;
+    bool connectUiSigSlot(IWidget *iwgt) final;
     void paintEvent(QPaintEvent *e);
 
 protected:

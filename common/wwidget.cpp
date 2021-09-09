@@ -28,7 +28,8 @@ bool WWidget::connectTPSigSlot(ITaskProcess *itp)
 {
     static const QMetaMethod mMethod = QMetaMethod::fromSignal(&WWidget::toTPSignal);
     bool bConnected = isSignalConnected(mMethod);
-    qDebug() << "void WWidget::connectTPSigSlot" << bConnected;
+    int iConnectedNum = receivers(SIGNAL(toTPSignal(const TaskSigTypeEnum &tstEnum, const QVariant& v, bool bThread = false)));
+    qDebug() << "void WWidget::connectTPSigSlot" << bConnected << iConnectedNum;
     return connect(this, &WWidget::toTPSignal, itp, &ITaskProcess::dispatchTaskSigSlot, Qt::ConnectionType(Qt::AutoConnection|Qt::UniqueConnection));
 }
 
@@ -36,7 +37,8 @@ bool WWidget::connectUiSigSlot(IWidget *iwgt)
 {
     static const QMetaMethod mMethod = QMetaMethod::fromSignal(&WWidget::toUiSignal);
     bool bConnected = isSignalConnected(mMethod);
-    qDebug() << "void WWidget::connectUiSigSlot" << bConnected;
+    int iConnectedNum = receivers(SIGNAL(toUiSignal(const UiSigTypeEnum &ustEnum, const QVariant& v)));
+    qDebug() << "void WWidget::connectUiSigSlot" << bConnected << iConnectedNum;
     return connect(this, &WWidget::toUiSignal, iwgt, &IWidget::dispatchUi2UiSigSlot, Qt::ConnectionType(Qt::AutoConnection|Qt::UniqueConnection));
 }
 
@@ -50,7 +52,7 @@ void WWidget::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 }
 
-void WWidget::dispatchTask2UiSigSlot(QObject *sender, const TaskSigTypeEnum &tstEnum, const QVariant &var)
+void WWidget::dispatchTask2UiSigSlot(const TaskSigTypeEnum &tstEnum, const QVariant &var, QObject *sender)
 {
     qDebug() << "this=" << this << "void WWidget::dispatchTask2UiSigSlot" << sender << tstEnum << var;
 }
